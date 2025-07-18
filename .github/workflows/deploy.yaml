@@ -1,0 +1,5 @@
+name: deploy samba-app
+on:
+  push:
+    branches:
+      - main

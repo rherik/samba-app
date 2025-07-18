@@ -16,7 +16,7 @@ export default function MyNavBar() {
 
   let links = [
     { name: 'Escolas', link: 'home', id: 'home', path: '/' },
-    { name: 'Cadastre', link: 'form', id: 'form' },
+    { name: 'Cadastre', path: '/form', id: 'form' },
     { name: 'Trivia', path: '/trivia' },
     { name: 'Sobre', link: 'sobre', id: 'Sobre' }
   ];

@@ -8,3 +8,6 @@ This is a project to upload form with image, text, date and number to a Rest Api
 ## Docs of the Used tecnologies 
 
 - https://www.material-tailwind.com/docs/react/navbar
+
+## Tarefas
+- Fazer fast api para armazenar informações e trivia
