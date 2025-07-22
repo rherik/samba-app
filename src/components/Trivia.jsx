@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { data } from '../assets/dataTrivia';
+import TriviaResultPage from './TriviaResultPage';
 
 export default function Trivia() {
     let [index, setIndex] = useState(0);
@@ -38,6 +39,10 @@ export default function Trivia() {
             resetOptions();
             setLock(false);
         }
+    }
+
+    if (index >= data.length) {
+        return <TriviaResultPage score={score} total={data.length} />;
     }
 
     return (

@@ -1,4 +1,3 @@
-import RegistrationForm from './RegistrationForm'
 import Sobre from './Sobre'
 import { mockDatabase } from '../assets/dataEscolas';
 
@@ -8,7 +7,7 @@ export default function Home() {
         <>
             <div className='flex flex-wrap justify-center gap-8 my-12' id="home">
                 {mockDatabase.map((escola) => (
-                    <div key={escola.id} className='flex flex-col bg-white border border-slate-200 rounded-lg w-lg shadow-lg hover:shadow-xl transition-shadow duration-300'>
+                    <div key={escola.id} className='flex flex-col bg-white border border-slate-200 rounded-lg w-md shadow-lg hover:shadow-xl transition-shadow duration-300'>
 
                         <img src={escola.img} alt="card-image" className='w-full h-48 object-cover rounded-t-lg' />
 
