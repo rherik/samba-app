@@ -1,5 +1,5 @@
 # Escolas de samba 
-This is a project to upload form with image, text, date and number to a Rest Api Spring Boot.
+
 
 ## How to run with docker
 - docker build --no-cache -t samba-front .

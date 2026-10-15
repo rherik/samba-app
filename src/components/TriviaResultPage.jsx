@@ -1,28 +1,19 @@
+export default function TriviaResultPage({ score, total, onRestart }) {
+  const percentage = Math.round((score / total) * 100);
+  const message = percentage >= 80
+    ? 'Você tem o samba no pé e na memória!'
+    : 'Que tal ouvir mais um samba e tentar de novo?';
 
-const TriviaResultPage = ({ score, total }) => {
-    const percentage = (score / total) * 100;
-    let message = '';
-    let image = '';
-
-    if (percentage >= 80) {
-        message = 'Parabéns! Você foi muito bem e sabe tudo de samba!';
-        image = '/images/samba-master.png'; // coloque uma imagem temática
-    } else {
-        message = 'Ops! Parece que você precisa assistir mais desfiles para virar um mestre do samba!';
-        image = '/images/need-more-samba.png'; // coloque uma imagem temática
-    }
-
-    return (
-        <div style={{ textAlign: 'center', marginTop: '3rem' }}>
-            <h1>Resultado do Quiz</h1>
-            <img src={image} alt="Resultado" style={{ maxWidth: '300px', margin: '2rem auto' }} />
-            <h2>{message}</h2>
-            <p>
-                Você acertou <strong>{score}</strong> de <strong>{total}</strong> perguntas.
-            </p>
-            <button onClick={() => window.location.reload()}>Tentar novamente</button>
-        </div>
-    );
-};
-
-export default TriviaResultPage;
+  return (
+    <main className="trivia-page">
+      <section className="result-card">
+        <span className="result-card__icon">♫</span>
+        <p className="eyebrow">Resultado final</p>
+        <h1>{message}</h1>
+        <div className="result-card__score"><strong>{score}</strong><span>/ {total}</span></div>
+        <p>Você acertou {percentage}% das perguntas.</p>
+        <button type="button" className="button button--primary" onClick={onRestart}>Jogar novamente <span>↻</span></button>
+      </section>
+    </main>
+  );
+}

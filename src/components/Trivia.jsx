@@ -1,72 +1,75 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { data } from '../assets/dataTrivia';
 import TriviaResultPage from './TriviaResultPage';
 
 export default function Trivia() {
-    let [index, setIndex] = useState(0);
-    let [question, setQuestion] = useState(data[index]);
-    let [lock, setLock] = useState(false);
-    let [score, setScore] = useState(0);
+  const [index, setIndex] = useState(0);
+  const [selected, setSelected] = useState(null);
+  const [score, setScore] = useState(0);
+  const question = data[index];
 
-    const resetOptions = () => {
-        const options = document.querySelectorAll('a');
-        options.forEach(option => {
-            option.classList.remove("bg-green-300", "border-green-600", "bg-red-300", "border-red-600");
-        });
-    };
+  if (!question) {
+    return <TriviaResultPage score={score} total={data.length} onRestart={() => { setIndex(0); setSelected(null); setScore(0); }} />;
+  }
 
+  const options = [1, 2, 3, 4, 5].map((number) => ({
+    number,
+    label: question[`option${number}`],
+  }));
 
-    const checkAnswer = (element, anwser) => {
-        element.preventDefault();
-        if (lock === false) {
-            if (question.anwser === anwser) {
-                element.target.classList.add("bg-green-300", "border-green-600");
-                setLock(true);
-                setScore(prev=> prev + 1);
-            } else {
-                element.target.classList.add("bg-red-300", "border-red-600");
+  const chooseAnswer = (number) => {
+    if (selected !== null) return;
+    setSelected(number);
+    if (number === question.answer) setScore((current) => current + 1);
+  };
 
-                setLock(true);
-            }
+  const nextQuestion = () => {
+    if (selected === null) return;
+    setIndex((current) => current + 1);
+    setSelected(null);
+  };
 
-        }
-    }
+  const getOptionClass = (number) => {
+    if (selected === null) return '';
+    if (number === question.answer) return 'trivia-option--correct';
+    if (number === selected) return 'trivia-option--wrong';
+    return 'trivia-option--muted';
+  };
 
-    const nextQuestion = () => {
-        if(lock === true) {
-            setIndex(++index);
-            setQuestion(data[index]);
-            resetOptions();
-            setLock(false);
-        }
-    }
-
-    if (index >= data.length) {
-        return <TriviaResultPage score={score} total={data.length} />;
-    }
-
-    return (
-        <section className='w-[580px] m-auto mt-[150px] bg-amber-100 text-[#262626] gap-2 p-4 rounded-lg bg-linear-65 from-purple-300 to-pink-200 '>
-            <div className='flex flex-col items-center text-start p-2 justify-around'>
-                <h1 className='text-xl pt-0 pb-2'>{index+1}. {question.question}</h1>
-                <hr className='text-black w-[95%]' />
-                
-                <div className='flex flex-col h-52 pt-4 text-center gap-0.5 justify-around'>
-                    <a href='' className='w-40 border-2 border-gray-800 rounded-lg cursor-pointer transition duration-500 hover:scale-125'
-                        onClick={(element) => { checkAnswer(element, 1) }}>{question.option1}</a>
-                    <a href='' className='w-40 border-2 border-gray-800 rounded-lg cursor-pointer transition duration-500 hover:scale-125'
-                        onClick={(element) => { checkAnswer(element, 2) }}>{question.option2}</a>
-                    <a href='' className='w-40 border-2 border-gray-800 rounded-lg cursor-pointer transition duration-500 hover:scale-125'
-                        onClick={(element) => { checkAnswer(element, 3) }}>{question.option3}</a>
-                    <a href='' className='w-40 border-2 border-gray-800 rounded-lg cursor-pointer transition duration-500 hover:scale-125'
-                        onClick={(element) => { checkAnswer(element, 4) }}>{question.option4}</a>
-                    <a href='' className='w-40 border-2 border-gray-800 rounded-lg cursor-pointer transition duration-500 hover:scale-125'
-                        onClick={(element) => { checkAnswer(element, 5) }}>{question.option5}</a>
-                </div>
-                <button onClick={nextQuestion} className='w-40 h-11 text-purple-500 bg-blue-100 border-2 border-gray-800 m-auto cursor-pointer rounded-lg transition duration-500 hover:scale-125'>Next</button>
-                <button onClick={() => {setLock(false); resetOptions(); }} className='bg-blue-50 border-1 border-gray-800 rounded-sm p-0.5 text-sm ml-[30rem] cursor-pointer transition duration-500 hover:scale-115'>Try again</button>
-                <p className="justify-start">{index + 1} de {data.length} questões</p>
-            </div>
-        </section>
-    )
+  return (
+    <main className="trivia-page">
+      <section className="trivia-card" aria-labelledby="trivia-title">
+        <div className="trivia-card__topline">
+          <span className="eyebrow">Desafio do samba</span>
+          <span className="trivia-score">{score} acertos</span>
+        </div>
+        <div className="trivia-progress" aria-label={`Questão ${index + 1} de ${data.length}`}>
+          <span style={{ width: `${((index + 1) / data.length) * 100}%` }} />
+        </div>
+        <p className="trivia-count">Questão {index + 1} de {data.length}</p>
+        <h1 id="trivia-title">{question.question}</h1>
+        <div className="trivia-options">
+          {options.map((option) => (
+            <button
+              type="button"
+              key={option.number}
+              className={`trivia-option ${getOptionClass(option.number)}`}
+              onClick={() => chooseAnswer(option.number)}
+            >
+              <span className="trivia-option__number">{String.fromCharCode(64 + option.number)}</span>
+              <span>{option.label}</span>
+              {selected !== null && option.number === question.answer && <span>✓</span>}
+              {selected === option.number && option.number !== question.answer && <span>×</span>}
+            </button>
+          ))}
+        </div>
+        <div className="trivia-card__footer">
+          <p>{selected === null ? 'Escolha uma resposta para continuar.' : selected === question.answer ? 'Mandou bem! Resposta correta.' : 'Quase! A resposta certa está destacada.'}</p>
+          <button type="button" className="button button--primary" disabled={selected === null} onClick={nextQuestion}>
+            {index === data.length - 1 ? 'Ver resultado' : 'Próxima questão'} <span>→</span>
+          </button>
+        </div>
+      </section>
+    </main>
+  );
 }
