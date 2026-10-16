@@ -8,7 +8,7 @@ export default function App() {
 
   return (
     <div className="app-shell">
-      <Router>
+      <Router basename={import.meta.env.BASE_URL.replace(/\/$/, '')}>
         <MyNavBar />
         <Routes>
           <Route path="/" element={<Home />} />
