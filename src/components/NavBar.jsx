@@ -23,7 +23,7 @@ export default function MyNavBar() {
   const goToSection = (anchor) => {
     setOpenNav(false);
     if (location.pathname !== '/') {
-      window.location.href = `/#${anchor}`;
+      window.location.href = `${import.meta.env.BASE_URL}#${anchor}`;
       return;
     }
     document.getElementById(anchor)?.scrollIntoView({ behavior: 'smooth' });
@@ -32,10 +32,10 @@ export default function MyNavBar() {
   return (
     <header className={`site-navbar ${scrolled ? 'site-navbar--scrolled' : ''}`}>
       <div className="site-navbar__inner">
-        <RouterLink to="/" className="brand" aria-label="Samba Carioca, página inicial">
+        <a href={import.meta.env.BASE_URL} className="brand" aria-label="Samba Carioca, página inicial">
           <span className="brand__mark">♪</span>
           <span>Samba Carioca</span>
-        </RouterLink>
+        </a>
 
         <button
           type="button"
@@ -54,6 +54,10 @@ export default function MyNavBar() {
             <button type="button" className="nav-link" key={link.name} onClick={() => goToSection(link.anchor)}>
               {link.name}
             </button>
+          ) : link.path === '/' ? (
+            <a className="nav-link" href={import.meta.env.BASE_URL} key={link.name}>
+              {link.name}
+            </a>
           ) : (
             <RouterLink className="nav-link" to={link.path} key={link.name}>
               {link.name}

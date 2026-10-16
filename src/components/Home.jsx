@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import Sobre from './Sobre';
 import { mockDatabase } from '../assets/dataEscolas';
 
@@ -24,12 +25,12 @@ export default function Home() {
           </p>
           <div className="hero__actions">
             <a className="button button--primary" href="#escolas">Explorar escolas</a>
-            <a className="button button--ghost" href="/trivia">Jogar trivia <span>→</span></a>
+            <Link className="button button--ghost" to="/trivia">Jogar trivia <span>→</span></Link>
           </div>
         </div>
         <div className="hero__art" aria-hidden="true" style={{ transform: `translateY(${scrollY * 0.12}px)` }}>
           <div className="hero__disc" />
-          <img src="/pandeiro.png" alt="" />
+          <img src={`${import.meta.env.BASE_URL}pandeiro.png`} alt="" />
           <span className="hero__note hero__note--one">♪</span>
           <span className="hero__note hero__note--two">♫</span>
         </div>
@@ -56,7 +57,7 @@ export default function Home() {
                   <span>Fundada em <strong>{escola.fundacao}</strong></span>
                   <span><strong>{escola.titulos}</strong> títulos</span>
                 </div>
-                <a href="/trivia" className="school-card__link">Conhecer no trivia <span>↗</span></a>
+                <Link to="/trivia" className="school-card__link">Conhecer no trivia <span>↗</span></Link>
               </div>
             </article>
           ))}
