@@ -8,5 +8,6 @@ export default defineConfig({
     react(), 
     tailwindcss(),
   ],
-  base: '/',
+  // Repository Pages serves this project under /samba-app/.
+  base: '/samba-app/',
 })
